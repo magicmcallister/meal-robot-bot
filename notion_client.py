@@ -1,8 +1,12 @@
-from decouple import config
+import os
+
 import requests
 import json
 
-apikey = "Bearer secret_4tY6KTbAgCKT9eWoLnuXlYKPmXK8wksK1xWQFjiK1Jm"
+from config import Config
+
+config = Config()
+config.load()
 
 notion_header = {
     "Notion-Version": "2021-05-13",
@@ -17,7 +21,7 @@ class NotionClient:
         self.db_query_url = f"https://api.notion.com/v1/databases/{self.db_id}/query"
 
         # Define auth
-        notion_header["Authorization"] = config("NOTION_TOKEN")
+        notion_header["Authorization"] = config.get("NOTION", "TOKEN")
         self.auth_header = notion_header
 
     def get_database(self):

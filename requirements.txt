@@ -3,3 +3,4 @@ requests
 nltk
 textblob
 telegram
+python-telegram-bot
