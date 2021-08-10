@@ -1,0 +1,5 @@
+decouple
+requests
+nltk
+textblob
+telegram
