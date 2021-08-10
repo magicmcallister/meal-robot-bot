@@ -1,6 +1,5 @@
 import os
 
-from decouple import config
 import random
 from random import randrange
 import textblob
@@ -9,8 +8,12 @@ from telegram.ext import Updater, handler
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 
+from config import Config
 from interpreter import Interpreter
 from notion_client import NotionClient
+
+config = Config()
+config.load()
 
 start_message = "Hi"
 
@@ -44,7 +47,7 @@ class Translator:
 
 class Bot:
     def __init__(self):
-        self.updater = Updater(token=config("TELEGRAM_BOT_TOKEN"), use_context=True)
+        self.updater = Updater(token=config.get("TELEGRAM", "BOT_TOKEN"), use_context=True)
         self.dispatcher = self.updater.dispatcher
 
         self._define_basic_commands()
