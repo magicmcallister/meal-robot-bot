@@ -96,6 +96,9 @@ class Bot:
                 if self.meal_options:
                     meal_option_index = self._set_random_option()
                     context.bot.send_message(chat_id=update.effective_chat.id, text=self.meal_options[meal_option_index])
+                    self.meal_options.pop(meal_option_index)
+                else:
+                    context.bot.send_message(chat_id=update.effective_chat.id, text="Ya no tengo más opciones que ofrecerte")
             elif w in hi_keywords:
                 filtered = True
                 context.bot.send_message(chat_id=update.effective_chat.id, text=hi_keywords[random.randint(0, len(hi_keywords) - 1)])
@@ -107,6 +110,7 @@ class Bot:
 
         if not filtered:
             # Translate message keywords
+            self.meal_options = []
             en_translator = Translator("en")
             input_key_words = interpreter.tokenize_filter_process(update.message.text)
             input_key_words_translated = []
@@ -115,7 +119,7 @@ class Bot:
                     input_key_words_translated.append(en_translator.translate(word).string)
                 except textblob.exceptions.NotTranslated:
                     pass
-
+            print(input_key_words_translated)
             # Find key-word matches
             only_one_option = {}
             for opt in self.properties:
@@ -139,6 +143,7 @@ class Bot:
                     # Show meal options
                     meal_option_index = self._set_random_option()
                     context.bot.send_message(chat_id=update.effective_chat.id, text=self.meal_options[meal_option_index])
+                    self.meal_options.pop(meal_option_index)
 
     def _define_basic_commands(self):
         # Start command
